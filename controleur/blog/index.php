@@ -1,8 +1,19 @@
 <?php
 
-// On demande les 5 derniers billets (modèle)
+// On calcul la page voulu et on demande les billets
 include_once('modele/blog/get_billets.php');
-$billets = get_billets(0, 5);
+if(isset($_GET['page']) AND ctype_digit($_GET['page']))
+{
+    $page = ($_GET['page'] * 5) - 5;
+}    
+else
+{
+    $page = 0;
+}
+$billets = get_billets($page, 5);
+
+//ajout du calcul du nombre de pages
+include_once('modele/blog/pagination.php');
 
 // On effectue du traitement sur les données (controleur)
 // Ici, on doit surtout sécuriser l'affichage
