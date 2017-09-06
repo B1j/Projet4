@@ -10,39 +10,14 @@
         <h1>Billet simple pour l'Alaska</h1>
 
         <!-- Boutons pagination-->        
-        <a 
-            <?php 
-                if(!isset($_GET['page']) OR $_GET['page']==1) 
-                {
-                    echo 'style="display :none;";';
-                }
-            ?>
-            href="blog.php?page=<?php 
-                                if(isset($_GET['page']))
-                                {
-                                    echo ($_GET['page']-1); 
-                                }
-                                ?>"
-        >Précédent</a>
-        <a 
-            <?php 
-            if(isset($_GET['page']) AND $_GET['page'] == $nbPage)
-            {
-                echo 'style="display :none;";';
-            }
-            ?>
-            href="blog.php?page=<?php
-                                if(isset($_GET['page']))
-                                {
-                                    echo ($_GET['page']+1); 
-                                }
-                                else
-                                {
-                                    echo 2;
-                                }
-                                ?>"
-        >Suivant</a>
+        <?php if ($ixPage != 1) { ?>
+            <a href="blog.php?section=index&page=<?php echo ($ixPage - 1); ?>">Précédent</a>
+        <?php } ?>
 
+        <?php if ($ixPage != $nbPage) { ?>
+            <a href="blog.php?section=index&page=<?php echo ($ixPage + 1); ?>">Suivant</a>
+        <?php } ?>
+        
         <!-- chargement des billets -->
         <?php
         foreach($billets as $billet)

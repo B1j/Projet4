@@ -1,22 +1,41 @@
 <?php
 
-// On calcul la page voulu et on demande les billets
-include_once('modele/blog/get_billets.php');
-if(isset($_GET['page']) AND ctype_digit($_GET['page']))
+//on inclu la class et on créé l'objet billet nécéssaire au calcul
+include_once('modele/blog/billet.php');
+$billet = new Billet();
+$nbPage = $billet->getPageNb();
+
+// On calcul la page voulu
+if(array_key_exists("page", $_GET) && isset($_GET['page']) && ctype_digit($_GET['page']))
 {
     $page = ($_GET['page'] * 5) - 5;
+    $ixPage = $_GET['page'];
+
+    // Si on a dépassé la limite max => limite max
+    if($_GET['page'] > $nbPage) 
+    {
+        $page = ($nbPage*5) -5;
+        $ixPage = $nbPage;
+    }
+    // Si on a dépassé la limite min => limite min
+    if($_GET['page'] < 1)
+    {
+        $page = 0;
+        $ixPage = 1;
+    }
 }    
 else
 {
     $page = 0;
+    $ixPage = 1;
 }
-$billets = get_billets($page, 5);
 
-//ajout du calcul du nombre de pages
-include_once('modele/blog/pagination.php');
 
-// On effectue du traitement sur les données (controleur)
-// Ici, on doit surtout sécuriser l'affichage
+//on demande les billets
+$billets = $billet->getByPage($page, 5);
+
+
+// On effectue du traitement sur les données, on doit surtout sécuriser l'affichage
 foreach($billets as $cle => $billet)
 {
     $billets[$cle]['titre'] = htmlspecialchars($billet['titre']);
