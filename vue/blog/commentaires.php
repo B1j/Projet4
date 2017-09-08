@@ -39,5 +39,17 @@
         <?php
         } // Fin de la boucle des commentaires
         ?>
+
+        <!-- formulaire d'ajout de commentaire -->
+        <form action="controleur/blog/commentaire_post.php" method="post">
+            <p>
+
+            <label for="auteur">Pseudo</label> : <input type="text" name="auteur" id="auteur" /><br />
+            <label for="commentaire">Message</label> :  <input type="text" name="commentaire" id="commentaire" /><br />
+            <input type="hidden" name="id_billet" value=<?php echo "$id_billet";?> />
+            <input type="submit" value="Envoyer" />
+
+            </p>
+        </form>
     </body>
 </html>

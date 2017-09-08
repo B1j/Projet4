@@ -1,42 +1,62 @@
 <?php
 
-class Billet {
+class Billet 
+{
 
     // Propriétés du billet
-    private $id;
-    private $titre;
-    private $contenu;
-    private $date_creation_fr;
+    private $_id;
+    private $_titre;
+    private $_contenu;
+    private $_date_creation_fr;
 
     // Constructor
-    public function __construct() {
+    public function __construct() 
+    {
 
     }
 
     // Getters & setters
-    public function getId() {
-        return $this->id;
+    public function getId() 
+    {
+        return $this->_id;
     }  
-    public function getTitre() {
-        return $this->titre;
+    public function getTitre() 
+    {
+        return $this->_titre;
     }
-    public function getContenu() {
-        return $this->contenu;
+    public function getContenu() 
+    {
+        return $this->_contenu;
     }
-    public function getDate_creation_fr() {
-        return $this->date_creation_fr;
+    public function getDate_creation_fr() 
+    {
+        return $this->_date_creation_fr;
     }
 
-    public function setId($id) {
-        $this->id = $id;
+    public function setId($id) 
+    {
+       $id = (int) $id;
+       if ($id > 0)
+            {
+               $this->_id = $id;        
+            }        
     }
-    public function setTitre($titre) {
-        $this->titre = $titre;
+    public function setTitre($titre) 
+    {
+        if (is_string($titre))        
+        {        
+            $this->_titre = $titre;        
+        }
     }
-    public function setContenu($contenu) {
-        $this->contenu = $contenu;
+    public function setContenu($contenu) 
+    {
+        if (is_string($contenu))
+        {
+        $this->_contenu = $contenu;
+        }
     }
-    public function setDate_creation_fr($date_creation_fr) {
+    public function setDate_creation_fr($date_creation_fr) 
+    {
         $this->date_creation_fr = $date_creation_fr;
     }
 
@@ -44,17 +64,26 @@ class Billet {
     public function getById($id)
     {         
         global $bdd;
-        $id = (int) $id;
+        try
+        {
+            $id = (int) $id;
+        }
+        catch (Exception $e)
+        {
+            echo '$id n\'est pas un nombre.';
+        }        
         
         $req = $bdd->prepare('SELECT id, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y à %Hh%imin%ss\') AS date_creation_fr FROM billets WHERE id = :id');
         $req->bindParam(':id', $id, PDO::PARAM_INT);    /* permet de préciser qu'il s'agit d'un entier */
         $req->execute();
         $billet = $req->fetch();
+
+        $req->closeCursor ();
         
-        $this->id = $id;        
-        $this->titre = $billet['titre'];
-        $this->contenu = $billet['contenu'];
-        $this->date_creation_fr = $billet['date_creation_fr'];
+        $this->_id = $id;        
+        $this->_titre = $billet['titre'];
+        $this->_contenu = $billet['contenu'];
+        $this->_date_creation_fr = $billet['date_creation_fr'];
 
     }
 
@@ -69,6 +98,8 @@ class Billet {
         $req->bindParam(':limit', $limit, PDO::PARAM_INT);      /* permet de préciser qu'il s'agit d'un entier */
         $req->execute();
         $billets = $req->fetchAll();
+
+        $req->closeCursor ();
         
         return $billets;
     }
@@ -80,6 +111,8 @@ class Billet {
         $requeteNbLigne = $bdd->query ('SELECT COUNT(id) as countid FROM billets');
         $nbLigne = $requeteNbLigne->fetch();
         $nbPage = (int)($nbLigne['countid']/5) + 1;
+
+        $requeteNbLigne->closeCursor ();
 
         return $nbPage;
     }

@@ -32,7 +32,7 @@
             <p>
                 <?php echo $billet['contenu']; ?>
                 <br />
-                <em><a href="commentaires.php?billet=<?php echo $billet['id']; ?>">Commentaires</a></em>
+                <em><a href="blog.php?section=commentaires&billet=<?php echo $billet['id']; ?>">Commentaires</a></em>
             </p>
         </div>
         <?php
