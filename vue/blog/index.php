@@ -11,11 +11,11 @@
 
         <!-- Boutons pagination-->        
         <?php if ($ixPage != 1) { ?>
-            <a href="blog.php?section=index&page=<?php echo ($ixPage - 1); ?>">Précédent</a>
+            <a href="index.php?section=index&page=<?php echo ($ixPage - 1); ?>">Précédent</a>
         <?php } ?>
 
         <?php if ($ixPage != $nbPage) { ?>
-            <a href="blog.php?section=index&page=<?php echo ($ixPage + 1); ?>">Suivant</a>
+            <a href="index.php?section=index&page=<?php echo ($ixPage + 1); ?>">Suivant</a>
         <?php } ?>
         
         <!-- chargement des billets -->
@@ -32,7 +32,7 @@
             <p>
                 <?php echo $billet['contenu']; ?>
                 <br />
-                <em><a href="blog.php?section=commentaires&billet=<?php echo $billet['id']; ?>">Commentaires</a></em>
+                <em><a href="index.php?section=commentaires&billet=<?php echo $billet['id']; ?>">Commentaires</a></em>
             </p>
         </div>
         <?php

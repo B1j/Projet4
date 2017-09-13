@@ -8,8 +8,8 @@
         
 
     <body>
-        <h1>Mon super blog !</h1>
-        <p><a href="blog.php">Retour à la liste des billets</a></p>
+        <h1>Billet simple pour l'Alaska</h1>
+        <p><a href="index.php">Retour à la liste des billets</a></p>
  
         <!-- affichage du billet -->
         <div class="news">
@@ -20,9 +20,9 @@
             
 
             <p>
-            <?php
-            echo nl2br(htmlspecialchars($billet->getContenu()));
-            ?>
+                <?php
+                echo nl2br(htmlspecialchars($billet->getContenu()));
+                ?>
             </p>
         </div>
 
@@ -34,9 +34,9 @@
         foreach ($commentaires as $commentaire)
         {
         ?>
-        <p><strong><?php echo htmlspecialchars($commentaire['auteur']); ?></strong> le <?php echo $commentaire['date_commentaire_fr']; ?></p>
-        <p><?php echo nl2br(htmlspecialchars($commentaire['commentaire'])); ?></p>
-        <?php
+            <p><strong><?php echo htmlspecialchars($commentaire['auteur']); ?></strong> le <?php echo $commentaire['date_commentaire_fr']; ?></p>
+            <p><?php echo nl2br(htmlspecialchars($commentaire['commentaire'])); ?></p>
+            <?php
         } // Fin de la boucle des commentaires
         ?>
 
@@ -44,10 +44,10 @@
         <form action="controleur/blog/commentaire_post.php" method="post">
             <p>
 
-            <label for="auteur">Pseudo</label> : <input type="text" name="auteur" id="auteur" /><br />
-            <label for="commentaire">Message</label> :  <input type="text" name="commentaire" id="commentaire" /><br />
-            <input type="hidden" name="id_billet" value=<?php echo "$id_billet";?> />
-            <input type="submit" value="Envoyer" />
+                <label for="auteur">Pseudo</label> : <input type="text" name="auteur" id="auteur" /><br />
+                <label for="commentaire">Message</label> :  <input type="text" name="commentaire" id="commentaire" /><br />
+                <input type="hidden" name="id_billet" value=<?php echo "$id_billet";?> />
+                <input type="submit" value="Envoyer" />
 
             </p>
         </form>

@@ -12,6 +12,6 @@ $commentaire = $_POST['commentaire'];
 $envoiCommentaire->sendCommentaire($id_billet, $auteur, $commentaire);
 
 // Redirection du visiteur vers la page des commentaires du billet
-header('Location: ../../blog.php?section=commentaires&billet=' . $id_billet);
+header('Location: ../../index.php?section=commentaires&billet=' . $id_billet);
 
 ?>
