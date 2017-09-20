@@ -25,18 +25,19 @@
         ?>
         <div class="news">
             <h3>
-                <?php echo $billet['titre']; ?>
-                <em>le <?php echo $billet['date_creation_fr']; ?></em>
+                <?php echo $billet->getTitre(); ?>
+                <em>le <?php echo $billet->getDate_creation_fr(); ?></em>
             </h3>
             
             <p>
-                <?php echo $billet['contenu']; ?>
+                <?php echo $billet->getContenu(); ?>
                 <br />
-                <em><a href="index.php?section=commentaires&billet=<?php echo $billet['id']; ?>">Commentaires</a></em>
+                <em><a href="index.php?section=commentaires&billet=<?php echo $billet->getId(); ?>">Commentaires</a></em>
             </p>
         </div>
         <?php
         }
         ?>
+        <p><a href="index.php?section=log">Administration</a></p>
     </body>
 </html>

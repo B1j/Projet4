@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>Billet simple pour l'Alaska</title>
-    <link href="vue/blog/style.css" rel="stylesheet" /> 
+        <link href="vue/blog/style.css" rel="stylesheet" />        
     </head>
         
 
@@ -34,8 +34,8 @@
         foreach ($commentaires as $commentaire)
         {
         ?>
-            <p><strong><?php echo htmlspecialchars($commentaire['auteur']); ?></strong> le <?php echo $commentaire['date_commentaire_fr']; ?></p>
-            <p><?php echo nl2br(htmlspecialchars($commentaire['commentaire'])); ?></p>
+            <p><strong><?php echo htmlspecialchars($commentaire->getAuteur()); ?></strong> le <?php echo $commentaire->getDate_commentaire_fr(); ?></p>
+            <p><?php echo nl2br(htmlspecialchars($commentaire->getCommentaire())); ?></p>
             <?php
         } // Fin de la boucle des commentaires
         ?>
@@ -45,7 +45,7 @@
             <p>
 
                 <label for="auteur">Pseudo</label> : <input type="text" name="auteur" id="auteur" /><br />
-                <label for="commentaire">Message</label> :  <input type="text" name="commentaire" id="commentaire" /><br />
+                <label for="commentaire">Message</label> : <textarea name="commentaire" id="commentaire" cols="30" rows="10"></textarea><br />
                 <input type="hidden" name="id_billet" value=<?php echo "$id_billet";?> />
                 <input type="submit" value="Envoyer" />
 
