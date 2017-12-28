@@ -137,10 +137,6 @@ class Billet
             $req->closeCursor ();
             
             return $Billet_modeles;
-            
-            $req->closeCursor ();
-            
-            return $billets; 
         }
         catch (Exception $e)
         {
@@ -164,6 +160,148 @@ class Billet
             return $nbPage;
         }
         catch (Exception $e)
+        {
+            echo $e->getMessage();
+            echo 'Echec de la requête vérifiez les paramètres.';
+        }
+    }
+
+    public function getListe()
+    {
+        try
+        {
+            global $bdd;
+            
+            $req = $bdd->prepare('SELECT id, titre FROM billets ORDER BY date_creation');
+            $req->execute();
+            $billets = $req->fetchAll();
+
+            $billets_modeles = [];
+            foreach($billets as $billet) {
+                $currentBillet = new Billet();
+                $currentBillet->setId($billet['id']);
+                $currentBillet->setTitre($billet['titre']);
+                
+                $Billet_modeles[] = $currentBillet;
+            }
+            $req->closeCursor ();
+            
+            return $Billet_modeles;
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+            echo 'Echec de la requête vérifiez les paramètres.';
+        }   
+    }
+
+    public function sendBillet ($titre, $contenu)
+    {
+        global $bdd;
+        //vérifications 
+        
+        if (is_string($titre))
+        {
+            $titre = (string) $titre;
+        }
+        else
+        {
+            echo $titre . ' n\'est pas du texte valide.';
+        }
+        
+        if (is_string($contenu))
+        {
+            $contenu = (string) $contenu;
+        }
+        else
+        {
+            echo $contenu . ' n\'est pas du texte valide.';
+        }
+        // éxécution de la requête, ajout du billet à la base de donnée
+        try 
+        {        
+            $req = $bdd->prepare ('INSERT INTO billets (`date_creation`, `titre`, `contenu`) VALUES (CURRENT_TIMESTAMP, :titre, :contenu)');
+            $req->bindParam(':titre', $titre, PDO::PARAM_STR);
+            $req->bindParam(':contenu', $contenu, PDO::PARAM_STR);
+            $req->execute();
+            
+            $req->closeCursor ();
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+            echo 'Echec de la requête vérifiez les paramètres.';
+        }   
+        
+    }
+
+    public function editBillet ($id, $titre, $contenu)
+    {
+        global $bdd;
+        //vérifications 
+        if (ctype_digit($id)) 
+        {
+            $id = (int) $id;
+        } 
+        else 
+        {
+            echo $id . ' n\'est pas un nombre.';
+        }
+        if (is_string($titre))
+        {
+            $titre = (string) $titre;
+        }
+        else
+        {
+            echo $titre . ' n\'est pas du texte valide.';
+        }
+        
+        if (is_string($contenu))
+        {
+            $contenu = (string) $contenu;
+        }
+        else
+        {
+            echo $contenu . ' n\'est pas du texte valide.';
+        }
+        try
+        {
+            $req = $bdd->prepare ('UPDATE billets SET titre = :titre, contenu = :contenu WHERE id = :id');
+            $req->bindParam(':id', $id, PDO::PARAM_INT);
+            $req->bindParam(':titre', $titre, PDO::PARAM_STR);
+            $req->bindParam(':contenu', $contenu, PDO::PARAM_STR);
+            $req->execute();
+            
+            $req->closeCursor ();
+        }
+        catch(Exception $e)
+        {
+            echo $e->getMessage();
+            echo 'Echec de la requête vérifiez les paramètres.';
+        }
+    }
+
+    public function deletBilletById ($id)
+    {
+        global $bdd;
+        //vérifications 
+        if (is_int($id) ||ctype_digit($id)) 
+        {
+            $id = (int) $id;
+        } 
+        else 
+        {
+            echo $id . ' n\'est pas un nombre.';
+        }
+        try
+        {
+            $req = $bdd->prepare ('DELETE FROM billets WHERE id = :id');
+            $req->bindParam(':id', $id, PDO::PARAM_INT);
+            $req->execute();
+            
+            $req->closeCursor ();
+        }
+        catch(Exception $e)
         {
             echo $e->getMessage();
             echo 'Echec de la requête vérifiez les paramètres.';

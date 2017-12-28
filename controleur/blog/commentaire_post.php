@@ -9,9 +9,18 @@ $id_billet = $_POST['id_billet'];
 $auteur = $_POST['auteur'];
 $commentaire = $_POST['commentaire'];
 
-$envoiCommentaire->sendCommentaire($id_billet, $auteur, $commentaire);
-
-// Redirection du visiteur vers la page des commentaires du billet
-header('Location: ../../index.php?section=commentaires&billet=' . $id_billet);
+if (empty($_POST['auteur']) || empty($_POST['commentaire']))
+{
+    echo"<p>Veuillez remplir tous les champs</p> <a href=../../index.php?section=commentaires&billet=$id_billet>Retour à la page</a>";
+}
+else
+{       
+    $envoiCommentaire->sendCommentaire($id_billet, $auteur, $commentaire);
+    // Redirection du visiteur vers la page des commentaires du billet
+    
+    header('Refresh:5;url=../../index.php?section=commentaires&billet=' . $id_billet);
+    echo 'Commentaire validé, en attente de modération. <br /> Vous allez revenir à la page des commentaires dans 5sec.';
+    
+}
 
 ?>

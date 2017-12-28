@@ -182,7 +182,7 @@ class Commentaire
         // éxécution de la requête, affichage a la valeur 1 = attente de modération
         try 
         {        
-            $req = $bdd->prepare ('INSERT INTO commentaires (`id`, `id_billet`, `affichage` ,`auteur`, `commentaire`, `date_commentaire`) VALUES (NULL, :id_billet, 1, :auteur, :commentaire, CURRENT_TIMESTAMP)');
+            $req = $bdd->prepare ('INSERT INTO commentaires (`id_billet`, `affichage` ,`auteur`, `commentaire`, `date_commentaire`) VALUES (:id_billet, 1, :auteur, :commentaire, CURRENT_TIMESTAMP)');
             $req->bindParam(':id_billet', $id_billet, PDO::PARAM_INT);
             $req->bindParam(':auteur', $auteur, PDO::PARAM_STR);
             $req->bindParam(':commentaire', $commentaire, PDO::PARAM_STR);
@@ -215,6 +215,35 @@ class Commentaire
         {        
             $req = $bdd->prepare ('UPDATE commentaires SET affichage = 2 WHERE id = :id_commentaire');
             $req->bindParam(':id_commentaire', $id_commentaire, PDO::PARAM_INT);
+            $req->execute();            
+            $req->closeCursor ();
+            header("Refresh: 0");
+            exit;
+        }
+        catch (Exception $e)
+        {
+            echo $e->getMessage();
+            echo 'Echec de la requête vérifiez les paramètres.';
+        }
+    }
+
+    public function reportCommentaireById($id_commentaire)
+    {
+        global $bdd;
+        //vérifications 
+        if (is_int($id_commentaire) || ctype_digit($id_commentaire)) 
+        {
+            $id_commentaire = (int) $id_commentaire;
+        } 
+        else 
+        {
+            echo $id_commentaire . ' n\'est pas un nombre.';
+        }
+        // éxécution de la requête, ajout de 1 à la valeur affichage pour le commentaire posédant id_commentaire
+        try 
+        {        
+            $req = $bdd->prepare ('UPDATE commentaires SET affichage = 1 WHERE id = :id_commentaire');
+            $req->bindParam(':id_commentaire', $id_commentaire, PDO::PARAM_INT);
             $req->execute();
             
             $req->closeCursor ();
@@ -243,9 +272,10 @@ class Commentaire
         {        
             $req = $bdd->prepare ('DELETE FROM commentaires WHERE id = :id_commentaire');
             $req->bindParam(':id_commentaire', $id_commentaire, PDO::PARAM_INT);
-            $req->execute();
-            
+            $req->execute();            
             $req->closeCursor ();
+            header("Refresh: 0;");
+            exit;
         }
         catch (Exception $e)
         {

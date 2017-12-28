@@ -33,12 +33,17 @@ if ($est_connecte) {
 
     $est_connecte = true;
 
+    //récupération de la liste des billets
+    include_once('./modele/blog/billet.php');
+    $listeBillet = new Billet();
+    $listeBillets = $listeBillet->getListe();
+    
     //ajout de la page
     include_once('./vue/blog/admin.php');
 
 
 } else {
     // MDP FAUX
-    var_dump('Erreur de connexion');
+    echo '<p>Mot de passe incorrect</p>';
 }
 

@@ -10,5 +10,7 @@ $billet->getById($id_billet);
 include_once('modele/blog/commentaire.php');
 $commentaire = new Commentaire();
 $commentaires = $commentaire->getForId($_GET['billet']);
+//creation de l'objet pour signaler un commentaire
+$commentaireAdmin = new Commentaire();
 //on affiche la vue
 include_once('vue/blog/commentaires.php');
